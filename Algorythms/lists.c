@@ -5,9 +5,9 @@
 
 #include "lists.h"
 
-list_node * initListNode(int value) {
+list_node *initListNode(int value) {
     list_node *newElement;
-    newElement = malloc(sizeof (list_node));
+    newElement = malloc(sizeof(list_node));
     newElement->next = NULL;
     newElement->prev = NULL;
     newElement->head = newElement;
@@ -18,17 +18,85 @@ list_node * initListNode(int value) {
     return newElement;
 }
 
-list_node * popElement(list_node *head, list_node *element) {
-    list_node *temp = element, *elementForRewritingIndex = element->prev;
-    // chain
-    element->prev->next = element->next;
-    element->next->prev = element->prev;
+list_node *_init_list(int number) {
+    list_node *newElement, *lastElement, *firstElement = initListNode(0);
 
-    for (list_node *el = elementForRewritingIndex->next; el != NULL; el = el->next) {
-        el->index = el->prev->index + 1;
+    lastElement = firstElement;
+    for (int i = 2; i <= number; i++) {
+        newElement = initListNode(0);
+        appendElement(lastElement, newElement);
+        lastElement = newElement;
     }
-    head->len--;
-    return temp;
+
+    return firstElement;
+}
+
+list_node *initList(int number, const int *value) {
+    list_node *list = _init_list(number);
+
+    if (value != NULL) {
+        list_node *element = list;
+        for (int i = 0; i < list->len; i++) {
+            element->value = *value;
+            element = element->next;
+        }
+    }
+
+    return list;
+}
+
+list_node *initRangeList(int number, int from) {
+    list_node *list = _init_list(number);
+    list_node *element = list;
+
+    int value = from;
+    for (int i = 0; i < list->len; i++) {
+        element->value = value++;
+        element = element->next;
+    }
+
+    return list;
+}
+
+list_node *initRandomList(int number, int MAXIMUM) {
+    list_node *list = _init_list(number);
+
+    list_node *element = list;
+    for (int i = 0; i < list->len; i++) {
+        element->value = random() % MAXIMUM;
+        element = element->next;
+    }
+
+    return list;
+}
+
+void _chainElements(list_node *left, list_node *right) {
+    left->next = right;
+    right->prev = left;
+}
+
+list_node *_deleteElement(list_node *element) {
+    list_node *previouslyELement = element->prev;
+    list_node *nextElement = element->next;
+    if (previouslyELement != NULL && nextElement != NULL) {
+        _chainElements(previouslyELement, nextElement);
+    }
+    return element;
+}
+
+list_node *popElement(list_node *element) {
+    list_node *startElementRewriteIndex = element->prev;
+    list_node *_listHead = element->head;
+
+    list_node *deletedElement = _deleteElement(element);
+
+    _listHead->len--;
+
+    for (list_node *el = startElementRewriteIndex->next; el != NULL; el = el->next) {
+        el->index--;
+    }
+
+    return deletedElement;
 }
 
 void appendElement(list_node *to, list_node *element) {
@@ -36,15 +104,14 @@ void appendElement(list_node *to, list_node *element) {
         return;
     }
 
+    _chainElements(to, element);
     element->head = to->head;
-    element->prev = to;
     element->index = to->index + 1;
 
-    to->next = element;
     to->head->len++;
 }
 
-list_node * getElement(list_node *from, int index) {
+list_node *getElement(list_node *from, int index) {
     int i = 0;
     list_node *element = from;
     while (element != NULL && i <= index) {
@@ -55,24 +122,6 @@ list_node * getElement(list_node *from, int index) {
         i++;
     }
     return NULL;
-}
-
-list_node * initRandomList(int number, int MAXIMUM) {
-    list_node *newElement, *element, *firstElement = initListNode(random() % MAXIMUM);
-
-    // cause firstElement also was limited
-    number--;
-
-    element = firstElement;
-    while (number > 0) {
-        newElement = initListNode(random() % MAXIMUM);
-        appendElement(element, newElement);
-        element = newElement;
-
-        number--;
-    }
-
-    return firstElement;
 }
 
 bool checkIn(list_node *checkingElement, list_node *headOfList) {
@@ -90,7 +139,7 @@ bool checkIn(list_node *checkingElement, list_node *headOfList) {
     return false;
 }
 
-list_node * intersection(list_node *firstHead, list_node *secondHead) {
+list_node *intersection(list_node *firstHead, list_node *secondHead) {
     list_node *resultHead, *resultElement, *currentElement = firstHead;
 
     while (currentElement != NULL) {
@@ -191,13 +240,15 @@ int lists_1() {
 }
 
 int lists_2() {
-    int n1, n2, max_num;
-    printf("MaxRandomNumber=");
-    scanf("%d", &max_num);
-    printf("len(L1)=");
-    scanf("%d", &n1);
-    printf("len(L2)=");
-    scanf("%d", &n2);
+    int n1, n2, max_num = 1000;
+
+    FILE *input = fopen("input.txt", "r");
+
+    fscanf(input, "%d", &n1);
+    fscanf(input, "%d", &n2);
+    fscanf(input, "%d", &max_num);
+
+    fclose(input);
 
     list_node *firstHead = initRandomList(n1, max_num), *secondHead = initRandomList(n2, max_num);
     printList(firstHead);
@@ -210,32 +261,38 @@ int lists_2() {
 }
 
 int lists_3() {
-    int n, m;
-//    printf("N=");
-//    scanf("%d", &n);
-//    printf("M=");
-//    scanf("%d", &m);
+    int n = 6, m = 15;
+//    FILE *input = fopen("input.txt", "r");
+//
+//    fscanf(input, "%d", &n);
+//    fscanf(input, "%d", &m);
+//
+//    fclose(input);
 
-    n = 5, m = 15;
-    list_node *group = initRandomList(n, 100);
+    list_node *group = initRangeList(n,1);
     printList(group);
-    
+
+    list_node *firstElement = group;
     list_node *lastElement = getElement(group, group->len - 1);
-    printListNode(getElement(group, 6), ' ');
-    // chain elements
-    group->prev = lastElement;
-    lastElement->next = group;
 
-    list_node *headOfGroup = group, *elementToPop;
-    int groupLen = group->len, indexToPop = 0;
-    while (groupLen > 1) {
-        int indexToPop = (m - 1) % groupLen;
-        elementToPop = getElement(headOfGroup, indexToPop);
+    _chainElements(lastElement, firstElement);
+    int counter = 1;
 
-        headOfGroup = getElement(headOfGroup, indexToPop+1);
-        popElement(group, getElement(group, indexToPop));
-        groupLen--;
+    list_node *element = group->head;
 
+    while (element->next != element) {
+        if (counter == m) {
+            list_node *deletedElement = _deleteElement(element);
+            element = deletedElement->next;
+            counter = 1;
+
+            printf("was deleted %d\n", deletedElement->value);
+        } else {
+            counter++;
+            element = element->next;
+        }
     }
+    printf("%d", element->value);
+
     return (EXIT_SUCCESS);
 }

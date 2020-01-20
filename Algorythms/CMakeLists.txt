@@ -26,4 +26,4 @@ add_executable(Algorythms
         randomArray.c
         randomArray.h
         structures.c
-        structures.h queue.h)
+        structures.h queue.h queue.h queue.c)

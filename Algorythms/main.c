@@ -5,8 +5,8 @@
 //#include "15th.h"
 //#include "16th.h"
 //#include "17th.h"
-#include "lists.h"
-
+//#include "lists.h"
+#include "queue.h"
 int main(int argc, char** argv) {
     // Algorithms
 //    laba14();
@@ -15,9 +15,8 @@ int main(int argc, char** argv) {
 //    laba17();
 //    lists_1();
 //    lists_2();
-    lists_3();
-    
-    // Translators
+//    lists_3();
+    comparePolynome();
     return (EXIT_SUCCESS);
 }
 

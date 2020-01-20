@@ -17,7 +17,7 @@ typedef struct list_node {
 
 list_node *initListNode(int value);
 
-list_node *_init_list(int number);
+list_node *_initList(int number);
 
 list_node *initList(int number, const int *value);
 
@@ -25,7 +25,7 @@ list_node *initRangeList(int number, int from);
 
 list_node *initRandomList(int number, int MAXIMUM);
 
-void appendElement(list_node *to, list_node *element);
+void _appendElement(list_node *to, list_node *element);
 
 list_node *popElement(list_node *element);
 
@@ -35,9 +35,7 @@ void _chainElements(list_node *left, list_node *right);
 
 list_node *getElement(list_node *from, int index);
 
-void printList(list_node *list);
-
-void printListNode(list_node *node, char tail);
+void printList(list_node *listHead, FILE *to);
 
 bool checkIn(list_node *head, list_node *element);
 
@@ -47,5 +45,10 @@ void swapListNode(list_node *firstElement, list_node *secondElement);
 
 list_node *intersection(list_node *firstHead, list_node *secondHead);
 
+list_node *union_(list_node *firstHead, list_node *secondHead);
+
+list_node * maxInList(list_node *list);
+
+list_node * minInList(list_node *list);
 #endif /* LISTS_H */
 

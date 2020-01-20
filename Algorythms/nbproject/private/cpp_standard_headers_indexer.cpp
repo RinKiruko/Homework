@@ -77,7 +77,7 @@
 #include <complex>          // Complex number type
 #include <valarray>         // Class for representing and manipulating arrays of values
 #include <numeric>          // Numeric operations on values in containers
-#include <iosfwd>           // forward declarations of all classes in the input/output library
+#include <iosfwd>           // forward declarations of all classes in the input.txt.txt/output library
 #include <ios>              // std::ios_base class, std::basic_ios class template and several typedefs
 #include <istream>          // std::basic_istream class template and several typedefs
 #include <ostream>          // std::basic_ostream, std::basic_iostream class templates and several typedefs
@@ -85,9 +85,9 @@
 #include <fstream>          // std::basic_fstream, std::basic_ifstream, std::basic_ofstream class templates and several typedefs
 #include <sstream>          // std::basic_stringstream, std::basic_istringstream, std::basic_ostringstream class templates and several typedefs
 #include <strstream>        // std::strstream, std::istrstream, std::ostrstream(deprecated)
-#include <iomanip>          // Helper functions to control the format or input and output
+#include <iomanip>          // Helper functions to control the format or input.txt.txt and output
 #include <streambuf>        // std::basic_streambuf class template
-#include <cstdio>           // C-style input-output functions
+#include <cstdio>           // C-style input.txt.txt-output functions
 #include <locale>           // Localization utilities
 #include <clocale>          // C localization utilities
 #include <ciso646>          // empty header. The macros that appear in iso646.h in C are keywords in C++

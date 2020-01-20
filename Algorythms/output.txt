@@ -1,2 +1,6 @@
-
-2 800005 
+1 2 3 4 5 
+was deleted 5
+was deleted 3
+was deleted 2
+was deleted 4
+1

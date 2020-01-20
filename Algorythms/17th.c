@@ -115,7 +115,7 @@ int pickPivot(array_of_integer *array, int leftIndex, int rightIndex) {
 int laba17() {
     int n, k1, k2, A, B, C, a1, a2;
     FILE *input, *output;
-    input = fopen("input.txt", "r");
+    input = fopen("input.txt.txt", "r");
 
     fscanf(input, "%d", &n);
     fscanf(input, "%d", &k1);

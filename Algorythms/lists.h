@@ -39,7 +39,7 @@ void printList(list_node *listHead, FILE *to);
 
 bool checkIn(list_node *head, list_node *element);
 
-void sortList(list_node *list_head);
+void sortList(list_node *list);
 
 void swapListNode(list_node *firstElement, list_node *secondElement);
 

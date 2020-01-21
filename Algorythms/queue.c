@@ -4,80 +4,139 @@
 #include <stdio.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "queue.h"
-#include "lists.h"
 
-term *initTerm(int coef, int power) {
-    term *newElement;
-    newElement = malloc(sizeof(term));
-    newElement->next = NULL;
-    newElement->prev = NULL;
-    newElement->head = newElement;
+node *initNode(double initValue) {
+    node *newElement;
+    newElement = malloc(sizeof(node));
+    newElement->ahead = NULL;
+    newElement->behind = NULL;
 
-    newElement->coef = coef;
-    newElement->power = power;
-    newElement->index = 0;
-    newElement->len = 1;
+    newElement->value = initValue;
     return newElement;
 }
 
-term *initPolynome(int number) {
-    term *firstTerm = initTerm(1, 0);
+struct Queue *initQueue(double initValue) {
+    node *newNode = initNode(initValue);
 
-    for (int i = 1; i <= number; i++)
-        appendTerm(firstTerm, 1);
+    struct Queue *queue;
+    queue = malloc(sizeof(struct Queue));
+    queue->next = newNode;
+    queue->last = newNode;
+    queue->len = 1;
 
-    return firstTerm;
+    return queue;
 }
 
-void appendTerm(term *to, int coef) {
-    if (to == NULL) {
+void put(struct Queue *queue, double value) {
+    if (queue == NULL) {
         return;
     }
-    term *lastNode = to;
-    while (lastNode->next != NULL)
-        lastNode = lastNode->next;
+    node *lastNode = queue->last;
+    node *newNode = initNode(value);
+    chainElements(newNode, lastNode);
 
-    term *newNode = initTerm(coef, lastNode->power + 1);
-    _chainElements(lastNode, newNode);
-    newNode->head = to;
-    newNode->index = lastNode->index + 1;
-
-    to->head->len++;
+    queue->last = newNode;
+    queue->len++;
 }
 
-void printPolynome(term *polynome, FILE *to) {
-    if (to != NULL) {
-        for (term *element = polynome->head; element != NULL; element = element->next) {
-            fprintf(to, "%d*x^%d + ", element->coef, element->power);
-        }
-    } else {
-        for (term *element = polynome->head; element != NULL; element = element->next) {
-            printf("%d*x^%d + ", element->coef, element->power);
-        }
-    }
+void chainElements(node *lagging, node *leading) {
+    lagging->ahead = leading;
+    leading->behind = lagging;
 }
 
-void comparePolynome() {
-    term *firstPolynome = initPolynome(5), *secondPolynome = initPolynome(5);
+double get(struct Queue *queue) {
+    node *result = queue->next;
+    queue->next = result->behind;
+    return result->value;
+}
+
+node *getNode(struct Queue *queue) {
+    if (queue->next == NULL)
+        return NULL;
+
+    node *result = queue->next;
+    queue->next = result->ahead;
+    return result;
+}
+
+void queue2() {
     FILE *input = fopen("/home/hokage/CLionProjects/Homework/Algorythms/input.txt", "r");
+    double a, b;
+    fscanf(input, "%le", &a);
+    fscanf(input, "%le", &b);
 
-    int coef;
-    term *term = firstPolynome->head;
-    for (int i = 0; i <= firstPolynome->len; i++) {
-        fscanf(input, "%d", coef);
-        term->coef = coef;
-        term = term->next;
-    }
-    term = secondPolynome->head;
-    for (int i = 0; i <= secondPolynome->len; i++) {
-        fscanf(input, "%d", coef);
-        term->coef = coef;
-        term = term->next;
+    struct Queue *lessA, *betweenAB, *greatB;
+    lessA = NULL;
+    betweenAB = NULL;
+    greatB = NULL;
+
+    double value;
+    int eof = fscanf(input, "%le ", &value);
+
+    while (eof != -1) {
+
+        if (value < (double) a) {
+            // init queue didn't
+            if (lessA == NULL) {
+                lessA = initQueue(value);
+            } else {
+                put(lessA, value);
+            }
+
+        } else if ((double) a <= value && value <= (double) b) {
+            // init queue if didn't
+            if (betweenAB == NULL) {
+                betweenAB = initQueue(value);
+            } else {
+                put(betweenAB, value);
+            }
+        } else {
+            // init queue if didn't
+            if (greatB == NULL) {
+                greatB = initQueue(value);
+            } else {
+                put(greatB, value);
+            }
+        }
+        eof = fscanf(input, "%le ", &value);
     }
     fclose(input);
 
-    FILE *output = fopen("/home/hokage/CLionProjects/Homework/Algorythms/output.txt", "r");
-    printPolynome(firstPolynome, output);
-    fclose(output);
+    printf("lesser a:");
+    while (lessA != NULL && lessA->next != NULL) {
+        printf("%f ", (float) get(lessA));
+    }
+    printf("\n");
+
+    printf("between a and b:");
+    while (betweenAB != NULL && betweenAB->next != NULL) {
+        printf("%f ", (float) get(betweenAB));
+    }
+    printf("\n");
+
+    printf("greater b:");
+    while (greatB != NULL && greatB->next != NULL) {
+        printf("%f ", (float) get(greatB));
+    }
+}
+
+void queue3() {
+    FILE *f = fopen("/home/hokage/CLionProjects/Homework/Algorythms/f.txt", "r");
+    FILE *g = fopen("/home/hokage/CLionProjects/Homework/Algorythms/g.txt", "w");
+
+    char symbol;
+    int eof;
+    struct Queue *digits = NULL;
+
+    do {
+        eof = fscanf(f, "%c", &symbol);
+        if (isdigit(symbol)) {
+            if (digits == NULL) {
+                digits = initQueue((double) strtof(&(symbol), NULL));
+            }
+        }
+    } while (eof != -1);
+
 }

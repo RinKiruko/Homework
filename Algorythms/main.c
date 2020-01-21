@@ -7,7 +7,8 @@
 //#include "17th.h"
 //#include "lists.h"
 #include "queue.h"
-int main(int argc, char** argv) {
+
+int main(int argc, char **argv) {
     // Algorithms
 //    laba14();
 //    laba15();
@@ -16,7 +17,15 @@ int main(int argc, char** argv) {
 //    lists_1();
 //    lists_2();
 //    lists_3();
-    comparePolynome();
+
+//    FILE *input = fopen("/home/hokage/CLionProjects/Homework/Algorythms/input.txt", "w");
+//    for (int i = 0; i <= 10; i++) {
+//        fprintf(input, "%le ", drand48() * 100);
+//    }
+//    fclose(input);
+
+    queue2();
+//    queue3();
     return (EXIT_SUCCESS);
 }
 

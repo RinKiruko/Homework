@@ -148,8 +148,8 @@ list_node *union_(list_node *firstHead, list_node *secondHead) {
     while (element != NULL) {
         if (!checkIn(element, resultHead)) {
             _appendElement(resultHead, initListNode(element->value));
-            element = element->next;
         }
+        element = element->next;
     }
 
     //second list
@@ -177,7 +177,7 @@ list_node *union_(list_node *firstHead, list_node *secondHead) {
 //                resultElement = temp;
 //            }
 //        }
-//        currentElement = currentElement->next;
+//        currentElement = currentElement->ahead;
 //    }
 //
 //    return resultHead;
@@ -248,22 +248,17 @@ void printListNode(list_node *node, char tail) {
     }
 }
 
-void sortList(list_node *listHead) { // bubble sorting
-    list_node *element = listHead;
+void sortList(list_node *list) { // bubble sorting
+    list_node *head = list->head;
 
-    if (element->next == NULL || element == NULL) {
+    if (head->next == NULL || head == NULL) {
         return;
     }
-    while (element != NULL) {
-        list_node *internalElement = element->next;
-        while (internalElement != NULL) {
-            if (element->value > internalElement->value) {
+    for (list_node *element = head; element->next != NULL; element=element->next) {
+        for (list_node *internalElement = element->next; internalElement->next !=NULL; internalElement=internalElement->next) {
+            if (element->value > internalElement->value)
                 swapListNode(element, internalElement);
-            }
-            internalElement = internalElement->next;
         }
-
-        element = element->next;
     }
 }
 
@@ -280,7 +275,7 @@ int lists_1() {
     fscanf(input, "%d", &n);
     fscanf(input, "%d", &max_num);
 
-    list_node *list = initRandomList(n, random() % max_num);
+    list_node *list = initRandomList(n, (int) rand() % max_num);
     _appendElement(list, initListNode(0));
     list_node *minElement = minInList(list), *maxElement = maxInList(list);
 

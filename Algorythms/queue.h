@@ -7,22 +7,31 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-typedef struct term {
-    int index;
-    int coef, power;
+typedef struct node {
+    struct node *ahead, *behind;
+    double value;
+} node;
+
+struct Queue {
+    node *next, *last;
     int len;
-    struct term *next, *prev, *head, *last;
-} term;
+};
+node *initNode(double initValue);
 
-term *initTerm(int coef, int power);
+struct Queue *initQueue(double initValue);
 
-term *initPolynome(int termNumber);
+void put(struct Queue *queue, double value);
 
-void appendTerm(term *to, int coef);
+void chainElements(node *left, node *right);
 
-void printPolynome(term *polynome, FILE *to);
+double get(struct Queue *queue);
 
-void comparePolynome();
+node *getNode(struct Queue *queue);
+
+void queue2();
+
+void queue3();
+
 #define ALGORYTHMS_QUEUE_H
 
 #endif //ALGORYTHMS_QUEUE_H

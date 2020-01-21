@@ -35,7 +35,10 @@ void put(struct Queue *queue, double value) {
     }
     node *lastNode = queue->last;
     node *newNode = initNode(value);
-    chainElements(newNode, lastNode);
+    if (queue->len >= 1)
+        chainElements(newNode, lastNode);
+    else
+        queue->next = newNode;
 
     queue->last = newNode;
     queue->len++;
@@ -47,9 +50,21 @@ void chainElements(node *lagging, node *leading) {
 }
 
 double get(struct Queue *queue) {
-    node *result = queue->next;
-    queue->next = result->behind;
-    return result->value;
+    node *resultNode = queue->next;
+    queue->next = resultNode->behind;
+
+    double result = resultNode->value;
+
+    free(resultNode);
+    queue->len--;
+
+    if (queue->next != NULL) {
+        queue->next->ahead = NULL;
+    } else {
+        queue->last = NULL;
+    }
+
+    return result;
 }
 
 node *getNode(struct Queue *queue) {
@@ -126,17 +141,29 @@ void queue3() {
     FILE *f = fopen("/home/hokage/CLionProjects/Homework/Algorythms/f.txt", "r");
     FILE *g = fopen("/home/hokage/CLionProjects/Homework/Algorythms/g.txt", "w");
 
-    char symbol;
-    int eof;
+    char symbol, string[100];
     struct Queue *digits = NULL;
 
-    do {
-        eof = fscanf(f, "%c", &symbol);
-        if (isdigit(symbol)) {
-            if (digits == NULL) {
-                digits = initQueue((double) strtof(&(symbol), NULL));
+    int eof = fscanf(f, "%s", string);
+    while (eof != -1){
+        char *ch = string;
+        while (*ch) {
+            if (isdigit(*ch)) {
+                if (digits == NULL) {
+                    digits = initQueue((double) *ch);
+                } else {
+                    put(digits, (double) *ch);
+                }
             }
+            ch++;
         }
-    } while (eof != -1);
+        fprintf(g, "%s ", string);
+        while(digits->next != NULL)
+            fprintf(g, "%c",(int) get(digits));
+
+        eof = fscanf(f, "%s", string);
+        fprintf(g, "\n");
+    };
+    fclose(f); fclose(g);
 
 }

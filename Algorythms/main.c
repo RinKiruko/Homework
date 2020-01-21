@@ -24,8 +24,8 @@ int main(int argc, char **argv) {
 //    }
 //    fclose(input);
 
-    queue2();
-//    queue3();
+//    queue2();
+    queue3();
     return (EXIT_SUCCESS);
 }
 

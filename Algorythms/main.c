@@ -6,7 +6,10 @@
 //#include "16th.h"
 //#include "17th.h"
 //#include "lists.h"
-#include "queue.h"
+//#include "queue.h"
+#include "stack.h"
+#include "tree.h"
+
 
 int main(int argc, char **argv) {
     // Algorithms
@@ -25,7 +28,11 @@ int main(int argc, char **argv) {
 //    fclose(input);
 
 //    queue2();
-    queue3();
+//    queue3();
+
+
+    testStack();
+
     return (EXIT_SUCCESS);
 }
 

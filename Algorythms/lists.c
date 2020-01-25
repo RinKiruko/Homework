@@ -44,7 +44,7 @@ void _appendElement(list_node *to, list_node *element) {
     to->head->len++;
 }
 
-list_node *initList(int number, const int *value) {
+list_node *initList(int number, int *value) {
     list_node *list = _initList(number);
 
     if (value != NULL) {

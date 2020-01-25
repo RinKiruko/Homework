@@ -6,14 +6,14 @@
 #define ALGORYTHMS_STACK_H
 
 struct Stack {
-    node *next, *last;
+    nodeptr *next, *last;
     int len;
 };
-struct Stack *initStack(double initValue);
+struct Stack *initStack(void *initValue);
 
-void stackPut(struct Stack *stack, double value);
+void stackPut(struct Stack *stack, void *value);
 
-double stackGet(struct Stack *queue);
+void * stackGet(struct Stack *stack);
 
 void testStack();
 void _testInitStack();

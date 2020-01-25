@@ -6,6 +6,10 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+typedef struct nodeptr{
+    struct nodeptr *ahead, *behind;
+    void *value;
+} nodeptr;
 
 typedef struct node {
     struct node *ahead, *behind;
@@ -18,10 +22,13 @@ struct Queue {
 };
 node *initNode(double initValue);
 
+nodeptr *initNodep(void *ptr);
+
 struct Queue *initQueue(double initValue);
 
 void put(struct Queue *queue, double value);
 
+void chainPtrElements(nodeptr *lagging, nodeptr *leading);
 void chainElements(node *left, node *right);
 
 double get(struct Queue *queue);

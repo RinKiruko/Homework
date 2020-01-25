@@ -7,6 +7,16 @@
 #include <ctype.h>
 #include "queue.h"
 
+nodeptr *initNodep(void *ptr) {
+    nodeptr *newElement;
+    newElement = malloc(sizeof(node));
+    newElement->ahead = NULL;
+    newElement->behind = NULL;
+
+    newElement->value = ptr;
+    return newElement;
+
+}
 node *initNode(double initValue) {
     node *newElement;
     newElement = malloc(sizeof(node));
@@ -43,6 +53,11 @@ void put(struct Queue *queue, double value) {
     queue->last = newNode;
     queue->len++;
 }
+
+void chainPtrElements(nodeptr *lagging, nodeptr *leading) {
+    lagging->ahead = leading;
+    leading->behind = lagging;
+};
 
 void chainElements(node *lagging, node *leading) {
     lagging->ahead = leading;
